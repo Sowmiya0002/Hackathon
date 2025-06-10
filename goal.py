@@ -4,11 +4,7 @@ import pandas as pd
 import numpy as np
 
 # Configure the API key
-if "GEMINI_API_KEY" not in st.secrets:
-    st.error("Please set the GEMINI_API_KEY in Streamlit secrets.")
-    st.stop()
-else:
-    genai.configure("AIzaSyC4eMIa_ZUz0tfUbJ18RmTXjbNpAysflvM")
+genai.configure(api_key="AIzaSyC4eMIa_ZUz0tfUbJ18RmTXjbNpAysflvM")
 
 st.title("Financial Goal Planner")
 st.write("Welcome to the Financial Goal Planner. Please input your details to get a personalized savings plan.")
