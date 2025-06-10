@@ -3,6 +3,7 @@ import google.generativeai as genai
 import pandas as pd
 import numpy as np
 import re
+import matplotlib.pyplot as plt  # Added import for matplotlib.pyplot
 
 # Custom CSS for modern UI
 st.markdown("""
@@ -47,11 +48,12 @@ st.markdown("""
         border-radius: 10px;
         padding: 10px;
     }
+   arrow: #ffffff;
     </style>
 """, unsafe_allow_html=True)
 
 # Configure the API key
-genai.configure(api_key="AIzaSyC4eMIa_ZUz0tfUbJ18RmTXjbNpAysflvM")
+genai.configure(api_key="AIzaSyCYZdy-q6TuvRFJP4XN8LSqWQsr4Yehwpg])
 
 st.markdown("<div class='title'>Financial Goal Planner</div>", unsafe_allow_html=True)
 st.write("Plan your financial future with ease! Enter your details to get a personalized savings plan.")
@@ -100,22 +102,26 @@ if st.button("Generate Your Plan"):
             reasoning = response_text.split("4.")[1].split("5.")[0].strip() if "4." in response_text and "5." in response_text else "Not provided."
             alternatives = response_text.split("5.")[1].strip() if "5." in response_text else "Not provided."
 
-            # Extract budget percentages for pie chart (simplified parsing)
+            # Extract budget percentages for pie chart
             budget_data = {"Savings": 0, "Expenses": 0, "Investments": 0}
+            budget_found = False
             if budget_breakdown != "Not provided.":
                 for line in budget_breakdown.split("\n"):
                     if "Savings" in line:
                         match = re.search(r"(\d+)%", line)
                         if match:
                             budget_data["Savings"] = int(match.group(1))
+                            budget_found = True
                     elif "Expenses" in line:
                         match = re.search(r"(\d+)%", line)
                         if match:
                             budget_data["Expenses"] = int(match.group(1))
+                            budget_found = True
                     elif "Investments" in line:
                         match = re.search(r"(\d+)%", line)
                         if match:
                             budget_data["Investments"] = int(match.group(1))
+                            budget_found = True
 
             # Tabs for dashboard
             tab1, tab2, tab3 = st.tabs(["📋 Your Plan", "📊 Visualizations", "🔍 Details"])
@@ -151,12 +157,16 @@ if st.button("Generate Your Plan"):
                 st.write("**Note:** Assumes a 5% annual interest rate compounded monthly.")
 
                 # Budget Breakdown Pie Chart
-                if sum(budget_data.values()) > 0:
+                if budget_found and sum(budget_data.values()) > 0:
                     st.markdown("<div class='subtitle'>Budget Breakdown</div>", unsafe_allow_html=True)
                     budget_df = pd.DataFrame.from_dict(budget_data, orient="index", columns=["Percentage"])
-                    st.pyplot(plt.figure(figsize=(6, 6)).add_subplot().pie(budget_df["Percentage"], labels=budget_df.index, autopct='%1.1f%%', colors=['#ff9999', '#66b3ff', '#99ff99']))
+                    fig, ax = plt.subplots(figsize=(6, 6))
+                    ax.pie(budget_df["Percentage"], labels=budget_df.index, autopct='%1.1f%%', colors=['#ff9999', '#66b3ff', '#99ff99'])
+                    st.pyplot(fig)
+                else:
+                    st.write("Budget breakdown not available or incomplete in the response.")
 
-                # Plan Comparison Bar Chart (simplified)
+                # Plan Comparison Bar Chart
                 st.markdown("<div class='subtitle'>Plan Comparison</div>", unsafe_allow_html=True)
                 recommended_savings = future_value
                 alternative_savings = recommended_savings * 1.1  # Assume alternative plan yields 10% more
