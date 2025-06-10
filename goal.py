@@ -53,7 +53,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configure the API key
-genai.configure(api_key="AIzaSyCYZdy-q6TuvRFJP4XN8LSqWQsr4Yehwpg)
+genai.configure(api_key="AIzaSyCYZdy-q6TuvRFJP4XN8LSqWQsr4Yehwpg")
 
 st.markdown("<div class='title'>Financial Goal Planner</div>", unsafe_allow_html=True)
 st.write("Plan your financial future with ease! Enter your details to get a personalized savings plan.")
