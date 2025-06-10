@@ -215,9 +215,14 @@ with st.container():
                         fig = px.line(df, x="Year", y="Savings", title="", 
                                       labels={"Savings": "Amount ($)"},
                                       color_discrete_sequence=["#ff6f61"])
-                        fig.update_layout(showmode="overlay", paper_bgcolor="rgba(0,0,0,0)", 
-                                          plot_bgcolor="rgba(0,0,0,0)", 
-                                          xaxis_title="Year", yaxis_title="Savings ($)")
+                        fig.update_layout(
+                            paper_bgcolor="rgba(0,0,0,0)", 
+                            plot_bgcolor="rgba(0,0,0,0)", 
+                            xaxis_title="Year", 
+                            yaxis_title="Savings ($)",
+                            showlegend=False,  # No legend needed for single line
+                            height=300
+                        )
                         st.plotly_chart(fig, use_container_width=True)
                         st.write("*5% annual interest, compounded monthly.")
 
@@ -242,8 +247,13 @@ with st.container():
                         })
                         fig = px.bar(comparison_df, x="Plan", y="Total Savings", 
                                      color="Plan", color_discrete_map={"Recommended": "#40c4ff", "Alternative": "#ffca28"})
-                        fig.update_layout(showmode="overlay", paper_bgcolor="rgba(0,0,0,0)", 
-                                          plot_bgcolor="rgba(0,0,0,0)", yaxis_title="Savings ($)")
+                        fig.update_layout(
+                            paper_bgcolor="rgba(0,0,0,0)", 
+                            plot_bgcolor="rgba(0,0,0,0)", 
+                            yaxis_title="Savings ($)",
+                            showlegend=True,  # Show legend for bar chart
+                            height=300
+                        )
                         st.plotly_chart(fig, use_container_width=True)
                         st.write("*Alternative assumes 10% higher return.")
 
