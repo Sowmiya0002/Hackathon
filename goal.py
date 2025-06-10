@@ -114,11 +114,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configure the API key
-if "GEMINI_API_KEY" not in st.secrets:
-    st.error("Please set the GEMINI_API_KEY in Streamlit secrets.")
-    st.stop()
-else:
-    genai.configure(api_key="AIzaSyCYZdy-q6TuvRFJP4XN8LSqWQsr4Yehwpg")
+genai.configure(api_key="AIzaSyCYZdy-q6TuvRFJP4XN8LSqWQsr4Yehwpg")
 
 # Main container for full-width layout
 with st.container():
